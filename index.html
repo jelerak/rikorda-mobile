@@ -3,7 +3,8 @@
 <html>
 <head>
     <title></title>
-    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=yes" />
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css"/>
     <link href="css/jquery-mobile.css" type="text/css" rel="stylesheet" />
 	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
@@ -68,11 +69,12 @@
 				destinationType: destinationType.FILE_URI,
 				sourceType: source });
 		}
-		$(document).ready(function(){
-
-			var myPhotoSwipe = $("ul.gallery a").photoSwipe({ enableMouseWheel: false , enableKeyboard: false });
-
-		});
+		$( ".photopopup" ).on({
+			popupbeforeposition: function() {
+				var maxHeight = $( window ).height() - 60 + "px";
+				$( ".photopopup img" ).css( "max-height", maxHeight );
+			}
+    });
     </script>
 </head>
 <body>
@@ -80,9 +82,7 @@
 <div data-role="content">
     <button data-theme="d" onclick="capturePhoto();">Fotocamera</button>
     <button data-theme="d" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">Galleria</button>
-	<ul class="gallery">
-		<li><a href="javascript:void(0);"><img style="display:none;width:100%;" id="largeImage" src=""/></a></li>
-	</ul>
+	<iframe style="display:none;width:100%;" frameborder="0" id="largeImage" src="" scrolling="yes" width="1024px"></iframe> 
 </div>
 
 </body>
