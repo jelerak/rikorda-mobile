@@ -48,10 +48,16 @@
                 sourceType: source });
         }
         $(document).ready(function() {
-			alert("pinched!");
             var handlePinch = function (e, $target, data) {
+				alert("pinched!");
                 var scale = data.scale;
-                $target.css({'-webkit-transform':'scale(' + scale + ',' + scale + ')','-moz-transform':'scale(' + scale + ',' + scale + ')'});
+                $target.css({
+					'transform':'scale(' + scale + ',' + scale + ')',
+					'-o-transform':'scale(' + scale + ',' + scale + ')'
+					'-webkit-transform':'scale(' + scale + ',' + scale + ')',
+					'-moz-transform':'scale(' + scale + ',' + scale + ')'
+					'-ms-transform':'scale(' + scale + ',' + scale + ')'
+				});
             };
             $("#photo_container").draggable({ containment: "#wrapper" });
             $('#photo_container').bind('touchy-pinch', handlePinch);
