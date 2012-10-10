@@ -1,28 +1,15 @@
-#map {
-    position: relative;
+* {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
 }
+body {
+    margin:0;
 
-#map-canvas {
-    height: 300px;
 }
+#wrapper { /* this wrap is only required to lock the app down and prevent scrolling */
+    background-color: #cccccc;
+    position:relative;
+    overflow:hidden;
 
-#map-stats {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    margin-bottom: 30px;
-    margin-right: 10px;
-    text-align: right;
-    display: none;
+    height:300px;
 }
-
-#map-stats .eps {
-    font: bold 30pt "Courier New", Courier, monospace;
-}
-
-#map-stats .tre {
-    font: 12pt "Courier New", Courier, monospace;
-}
-
-
-

@@ -3,17 +3,21 @@
 <head>
     <title></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=2" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="HandheldFriendly" content="true" />
+
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
     <link rel="stylesheet" href="css/jquery-mobile.css" type="text/css"/>
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/ui-lightness/jquery-ui.css"
-          type="text/css" media="all"/>
+    <link rel="stylesheet" href="css/jquery-ui.css"  type="text/css" media="all"/>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
     <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
-    <!--script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script-->
+    <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
     <script src="js/jquery.touchy.js"></script>
-    <!--script src="js/jquery.ui.touch-punch.js"></script-->
+    <script src="js/jquery.ui.touch-punch.js"></script>
     <script src="js/cordova-2.1.0.js" type="text/javascript"></script>
     <script type="text/javascript" charset="utf-8">
         var pictureSource; // picture source
@@ -46,48 +50,11 @@
         }
         $(document).ready(function() {
             var handlePinch = function (e, $target, data) {
-                alert("pinched!!");
-                $(this).css({
-                    '-webkit-transform' : 'scale(' + data.scale + ',' + data.scale + ')',
-                    '-moz-transform' : 'scale(' + data.scale + ',' + data.scale + ')'
-                });
+                var scale = data.scale;
+                $target.css({'-webkit-transform':'scale(' + scale + ',' + scale + ')','-moz-transform':'scale(' + scale + ',' + scale + ')'});
             };
-            //$("#photo-container").draggable({ containment: "#wrapper" });
+            $("#photo_container").draggable({ containment: "#wrapper" });
             $('#photo_container').bind('touchy-pinch', handlePinch);
-            var handleDrag = function (event, phase, $target, data) {
-
-                 var movePoint = data.movePoint,
-                     startPoint = data.startPoint,
-                     velocity = data.velocity;
-                 alert(movePoint + " " + startPoint + " " + velocity);
-                 switch (phase) {
-                     case 'start':
-                         $target.css('border','2px solid yellow');
-                         break;
-                     case 'move':
-                         $target.css({'zIndex':'99',
-                             '-webkit-transform': 'translate(' + (movePoint.x - startPoint.x) + 'px, ' + (movePoint.y - startPoint.y) + 'px)',
-                             '-moz-transform': 'translate(' + (movePoint.x - startPoint.x) + 'px, ' + (movePoint.y - startPoint.y) + 'px)'
-                         });
-                         if ((302 < movePoint.x && movePoint.x < 402) && (402 < movePoint.y && movePoint.y < 502)) {
-                             $('#test_target').css({'border':'4px solid red', '-webkit-transform':'translate(-2px, -2px)', '-moz-transform':'translate(-2px, -2px)'});
-                         }
-                         break;
-                     case 'end':
-                         if ((302 < movePoint.x && movePoint.x < 402) && (402 < movePoint.y && movePoint.y < 502)) {
-                             $target.css({'top':'402px', 'left':'302px', '-webkit-transform':'translate(0,0)', 'border':'0'});
-                             $('#test_target').css({'border':'2px solid blue', '-webkit-transform':'translate(0,0)', '-moz-transform':'translate(0,0)'});
-                             $target.unbind('touchy-drag', handleTouchyDrag);
-                         }
-                         else {
-                             $target.css({'zIndex':'5', '-webkit-transform':'translate(0px, 0px)', '-moz-transform':'translate(0px, 0px)', 'border':'0'});
-                         }
-
-                         break;
-                 }
-                $('#photo_container').bind('touchy-drag', handleDrag);
-                $('#photo_container').bind('drag', handleDrag);
-             }
 
         });
     </script>
@@ -99,22 +66,12 @@
             <button data-theme="d" onclick="getPhoto(pictureSource.PHOTOLIBRARY);">Galleria</button>
         </div>
         <div class="span1"></div>
-        <div id="wrapper" class="span10" style="background-color: #cccccc; height: 300px; overflow:hidden;">
-            <div id="photo_container" style="position: relative; width:200px; height:200px; background-color: #444444">
-                <!--img id="largeImage" src="img/test.gif" style="max-width:100%; max-height:100%"-->
+        <div id="wrapper" class="span10">
+            <div id="photo_container" style="width:200px; height:200px;">
+                <img id="largeImage" src="" style="display:none; max-width:100%; max-height:100%">
             </div>
         </div>
         <div class="span1"></div>
-        <!--
-        <div class="span1"></div>
-        <div  id="wrapper" class="span10 ui-widget-content">
-            <div id="photo-container">
-            <iframe frameborder="0" src="content.html" style="width: 300px; height: 300px; z-index: 2000"></iframe>
-            </div>
-            <div style="position: absolute; height: 300px; width: 300px; left:0px; top: 0px; background-color: #bbbbbb; opacity: 0.1; z-index: 1000;"></div>
-        </div>
-        <div class="span1"></div>
-        -->
     </div>
 </div>
 </body>
