@@ -28,7 +28,6 @@
         function onDeviceReady() {
             pictureSource = navigator.camera.PictureSourceType;
             destinationType = navigator.camera.DestinationType;
-            alert('Device ready');
         }
 
         function onFail(message) {
@@ -49,6 +48,7 @@
                 sourceType: source });
         }
         $(document).ready(function() {
+			alert("pinched!");
             var handlePinch = function (e, $target, data) {
                 var scale = data.scale;
                 $target.css({'-webkit-transform':'scale(' + scale + ',' + scale + ')','-moz-transform':'scale(' + scale + ',' + scale + ')'});
