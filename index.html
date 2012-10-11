@@ -16,6 +16,7 @@
     <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
     <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+    <--script src="js/jgestures.min.js"></script-->
     <script src="js/jquery.touchy.js"></script>
     <script src="js/jquery.ui.touch-punch.js"></script>
     <script src="js/cordova-2.0.0.js" type="text/javascript"></script>
@@ -39,6 +40,7 @@
 
             $('#largeImage').attr("src", imageURI).show();
             $('#move_photo').button('disable');
+            $('#resize_photo').button('enable');
             $('#control_panel').show();
         }
 
@@ -53,37 +55,40 @@
             }
 
         }
+        handlePinch = function (target, ev) {
+            alert("pinched with jgestures!");
+            scaleImage($(target), ev.scale);
+        };
+        handleTouchyPinch = function (e, $target, data) {
+            alert("pinched with touchy !");
+            scaleImage($target, data.scale);
+        };
+
+        function scaleImage(target, scale) {
+            target.css({
+                 'transform':'scale(' + scale + ',' + scale + ')',
+                 '-o-transform':'scale(' + scale + ',' + scale + ')',
+                 '-webkit-transform':'scale(' + scale + ',' + scale + ')',
+                 '-moz-transform':'scale(' + scale + ',' + scale + ')',
+                 '-ms-transform':'scale(' + scale + ',' + scale + ')'
+            });
+        }
+
         $(document).ready(function() {
-            var w = 200, h = 200;
-
-            var handlePinch = function (e, $target, data) {
-                //alert("pinched!");
-                var scale = data.scale;
-                $target.css({
-                    /*
-                     'transform':'scale(' + scale + ',' + scale + ')',
-                     '-o-transform':'scale(' + scale + ',' + scale + ')',
-                     '-webkit-transform':'scale(' + scale + ',' + scale + ')',
-                     '-moz-transform':'scale(' + scale + ',' + scale + ')',
-                     '-ms-transform':'scale(' + scale + ',' + scale + ')'
-                     */
-                    width: w * data.scale,
-                    height: h * data.scale
-
-                });
-            };
             $("#photo_container").draggable({ containment: "#wrapper" });
 
             $('#move_photo').click(function() {
                 $('#move_photo').button('disable');
                 $('#resize_photo').button('enable');
                 $("#photo_container").draggable({ containment: "#wrapper" });
-                $('#photo_container').unbind('touchy-pinch', handlePinch);
+                //$('#photo_container').unbind('pinch', handlePinch);
+                $('#photo_container').unbind('touchy-pinch', handleTouchyPinch);
             });
             $('#resize_photo').click(function() {
                 $('#resize_photo').button('disable');
                 $('#move_photo').button('enable');
-                $('#photo_container').bind('touchy-pinch', handlePinch);
+                //$('#photo_container').bind('pinch', handlePinch);
+                $('#photo_container').bind('touchy-pinch', handleTouchyPinch);
                 $("#photo_container").draggable("destroy");
             });
 
