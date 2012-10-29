@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=2" name="viewport">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="true"/>
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css">
+    <link rel="stylesheet" href="css/jquery-mobile.css" type="text/css"/>
+    <link rel="stylesheet" href="css/jquery-ui.css" type="text/css" media="all"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/jquery-ui-1.8.21.min.js"></script>
+    <script src="js/jquery.mobile-1.2.0.min.js"></script>
+    <script src="js/jgestures.min.js"></script>
+    <!--script src="js/jquery.touchy.js"></script-->
+    <script src="js/jquery.ui.touch-punch.js"></script>
+    <script src="js/cordova-2.0.0.js" type="text/javascript"></script>
+    <script type="text/javascript" charset="utf-8">
+        var pictureSource; // picture source
+        var destinationType; // sets the format of returned value
+        // Wait for Cordova to connect with the device
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady() {
+            navigator.splashscreen.hide();
+            pictureSource = navigator.camera.PictureSourceType;
+            destinationType = navigator.camera.DestinationType;
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+
+        // Called when a photo is successfully retrieved
+        function onPhotoURISuccess(imageURI) {
+
+            $('#largeImage').attr("src", imageURI).show();
+            $('#move_photo').button('disable');
+            $('#resize_photo').button('enable');
+            $('#control_panel').show();
+        }
+
+        function getPhoto() {
+            if (pictureSource != undefined) {
+                var source = pictureSource.PHOTOLIBRARY;
+                navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                    destinationType: destinationType.FILE_URI,
+                    sourceType: source });
+            } else {
+                onPhotoURISuccess("img/test.jpg")
+            }
+
+        }
+        handlePinch = function (target, ev) {
+            alert("pinched with jgestures!");
+            scaleImage($(this), ev.scale);
+        };
+        handleTouchyPinch = function (e, $target, data) {
+            alert("pinched with touchy !");
+            scaleImage($target, data.scale);
+        };
+
+        function scaleImage(target, scale) {
+            target.css({
+                 'transform':'scale(' + scale + ',' + scale + ')',
+                 '-o-transform':'scale(' + scale + ',' + scale + ')',
+                 '-webkit-transform':'scale(' + scale + ',' + scale + ')',
+                 '-moz-transform':'scale(' + scale + ',' + scale + ')',
+                 '-ms-transform':'scale(' + scale + ',' + scale + ')'
+            });
+        }
+
+        $(document).ready(function() {
+            $("#photo_container").draggable({ containment: "#wrapper" });
+
+            $('#move_photo').click(function() {
+                $('#move_photo').button('disable');
+                $('#resize_photo').button('enable');
+                $("#photo_container").draggable({ containment: "#wrapper" });
+                $('#photo_container').unbind('pinch', handlePinch);
+                //$('#photo_container').unbind('touchy-pinch', handleTouchyPinch);
+            });
+            $('#resize_photo').click(function() {
+                $('#resize_photo').button('disable');
+                $('#move_photo').button('enable');
+                $('#photo_container').bind('pinch', handlePinch);
+                //$('#photo_container').bind('touchy-pinch', handleTouchyPinch);
+                $("#photo_container").draggable("destroy");
+            });
+
+        });
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <button data-theme="d" onclick="getPhoto();">Gallery</button>
+        </div>
+        <div class="span1"></div>
+        <div id="wrapper" class="span10">
+            <div id="photo_container" style="width:200px; height:200px;">
+                <img id="largeImage" src="" style="display:none; max-width:100%; max-height:100%">
+            </div>
+        </div>
+        <div class="span1"></div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12" id="control_panel" style="display:none">
+            <div class="span6">
+                <button data-theme="d" id="move_photo">Move</button>
+            </div>
+            <div class="span6">
+                <button data-theme="d" id="resize_photo">Resize</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

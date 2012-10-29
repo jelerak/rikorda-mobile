@@ -760,7 +760,7 @@
     contexts = {};
     
     /* The following is a metaprogramming loop, and thus it's ugly.
-     * See the example in the comments to understand this code more easily.
+     * See the redarea in the comments to understand this code more easily.
      */
     $.each($.touchyOptions, function(key, value){
         if (key !== 'useDelegation') {
@@ -803,7 +803,7 @@
     });
 
     
-    /* example code that the above metaprogramming loop would look like, if it
+    /* redarea code that the above metaprogramming loop would look like, if it
      * exploded for the "drag" key.
      * 
      * additional comments are from Ben Alman's awesome blog post 
